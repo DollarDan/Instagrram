@@ -51,6 +51,12 @@ class MainActivity : ComponentActivity() {
 fun App() {
     val ctx = LocalContext.current
     var play by remember { mutableStateOf(PlayerHolder.session) }
+    var gallery by remember { mutableStateOf<Folder?>(null) }
+    var storage by remember { mutableStateOf(false) }
+    fun start(sess: Sess, minutes: Int) {
+        PlayerHolder.start(ctx, sess, minutes)
+        play = sess
+    }
     val s = play
     if (s != null) {
         val leave = { PlayerHolder.stop(); play = null }
@@ -58,9 +64,17 @@ fun App() {
         PlayerScreen(s, leave)
     } else {
         androidx.compose.foundation.layout.Box(Modifier.fillMaxSize().systemBarsPadding()) {
-            HomeScreen { sess, minutes ->
-                PlayerHolder.start(ctx, sess, minutes)
-                play = sess
+            val g = gallery
+            when {
+                g != null -> {
+                    BackHandler { gallery = null }
+                    GalleryScreen(g, { start(it, if (g.sleep) Store.sleepMinutes else 0) }, { gallery = null })
+                }
+                storage -> {
+                    BackHandler { storage = false }
+                    StorageScreen(Store.folders, { start(it, 0) }, { storage = false })
+                }
+                else -> HomeScreen({ sess, m -> start(sess, m) }, { gallery = it }, { storage = true })
             }
         }
     }

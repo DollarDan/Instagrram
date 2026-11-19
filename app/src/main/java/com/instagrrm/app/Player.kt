@@ -75,7 +75,7 @@ object PlayerHolder {
                 MediaMetadata.Builder().setTitle(it.name.substringBeforeLast('.')).setArtist(s.title).build()
             ).build()
         }, s.start, C.TIME_UNSET)
-        pl.repeatMode = if (s.loopEach) Player.REPEAT_MODE_ONE else Player.REPEAT_MODE_ALL
+        pl.repeatMode = if (s.loopEach || s.startLoop) Player.REPEAT_MODE_ONE else Player.REPEAT_MODE_ALL
         pl.prepare()
         pl.playWhenReady = true
         sleep(sleepMinutes)

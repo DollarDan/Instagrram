@@ -60,7 +60,7 @@ fun Label(t: String) = Text(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(onStart: (Sess, Int) -> Unit) {
+fun HomeScreen(onStart: (Sess, Int) -> Unit, onGallery: (Folder) -> Unit, onStorage: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var folders by remember { mutableStateOf(Store.folders) }
@@ -157,7 +157,7 @@ fun HomeScreen(onStart: (Sess, Int) -> Unit) {
         Label("Folders")
         folders.forEach { f ->
             Card(Modifier.padding(bottom = 8.dp)) {
-                Box(Modifier.clickable { toast("Folder gallery arrives in phase 2") }.padding(4.dp)) { FolderIcon() }
+                Box(Modifier.clickable { onGallery(f) }.padding(4.dp)) { FolderIcon() }
                 Text(
                     f.name, Modifier.weight(1f).combinedClickable(onClick = { play(f) }, onLongClick = { edit = true }).padding(vertical = 10.dp),
                     maxLines = 1
@@ -176,11 +176,11 @@ fun HomeScreen(onStart: (Sess, Int) -> Unit) {
                 .border(1.dp, Color(0xFF555555), RoundedCornerShape(16.dp))
                 .clickable { newName = ""; nameDialog = true }.padding(16.dp)
         )
-        Card(Modifier.padding(bottom = 8.dp).clickable { toast("Storage arrives in phase 2") }) {
+        Card(Modifier.padding(bottom = 8.dp).clickable { onStorage() }) {
             FolderIcon(Modifier.padding(4.dp))
             Column(Modifier.weight(1f)) {
                 Text("Storage", fontWeight = FontWeight.Bold)
-                Text("Used and free space (phase 2)", color = Muted, fontSize = 13.sp)
+                Text(remember { storageLine() }, color = Muted, fontSize = 13.sp)
             }
             Text("›", color = Muted)
         }

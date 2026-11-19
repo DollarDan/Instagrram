@@ -1,4 +1,4 @@
-# Instagrrm - Phase 1 (core app)
+# Instagrrm - Phase 2 (core app + gallery + storage)
 
 Native Android (Kotlin + Jetpack Compose + Media3), for a Samsung S24 (Android 14).
 
@@ -23,3 +23,12 @@ To get a file you can copy to the phone: Build > Build Bundle(s) / APK(s) > Buil
 - Only files directly inside a folder are played (not subfolders).
 - The edit-mode list does not scroll; with many folders, remove or reorder a few at a time.
 - Not compiled here: if Android Studio reports an error, paste it back and I will fix it.
+
+## Added in Phase 2
+- Folder icon on a folder row opens the gallery: 3 columns, video length on each tile, MP3 tiles with length.
+- Tap a reel: it loops until you swipe up, then continues through the folder. The folder's sleep ring is respected.
+- Long-press to select. "3 selected of 20", Select all, ticked and dimmed tiles. Share, Move and Delete in the bottom bar.
+- Move opens the phone's file manager so you can pick any destination folder.
+- Delete asks first. Files go to the Android recycle bin when possible; the dialog tells you if any cannot and will be deleted permanently.
+- Storage card on Home shows used and free space and opens the Storage screen: folder sizes, five largest videos (Play, Move, Delete), Clear temp files, Free memory.
+- Compress buttons are placeholders until Phase 3.

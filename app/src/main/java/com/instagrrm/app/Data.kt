@@ -7,7 +7,7 @@ import androidx.documentfile.provider.DocumentFile
 import org.json.JSONArray
 import org.json.JSONObject
 
-data class Media(val uri: String, val name: String, val audio: Boolean)
+data class Media(val uri: String, val name: String, val audio: Boolean, val parent: String = "", val size: Long = 0L)
 data class Folder(
     val name: String,
     val uri: String,
@@ -20,7 +20,8 @@ data class Sess(
     val items: List<Media>,
     val loopEach: Boolean,
     val single: Boolean = false,
-    val start: Int = 0
+    val start: Int = 0,
+    val startLoop: Boolean = false
 )
 
 object Store {
@@ -68,6 +69,6 @@ fun listMedia(ctx: Context, treeUri: String): List<Media> {
             f.name?.endsWith(".mp3", true) == true)
     }.sortedBy { it.name?.lowercase() ?: "" }.map { f ->
         val n = f.name ?: "Media"
-        Media(f.uri.toString(), n, f.type?.startsWith("audio/") == true || n.endsWith(".mp3", true))
+        Media(f.uri.toString(), n, f.type?.startsWith("audio/") == true || n.endsWith(".mp3", true), dir.uri.toString(), f.length())
     }
 }
